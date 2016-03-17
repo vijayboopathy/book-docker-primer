@@ -1,0 +1,31 @@
+Docker Primer
+
+	Chapter xx  : Introduction to Containers and Docker
+	Chapter xx  : Microservices Architecture and Docker
+	Chapter xx  : Setting up Learning Environment
+	Chapter xx  : Getting started with Docker Containers
+	Chapter xx  : Container Operations
+	Chapter xx  : Working with Images
+	Chapter xx  : Dockerfile Primer
+	Chapter xx  : Linking Containers
+	Chapter xx  : Docker Compose
+	Chapter xx  : Netorking with Docker
+	Chapter xx  : Managing Data with Containers
+	Chapter xx  : Orchestration and  Clustering
+
+Chapters for Further Consideration for Future Books
+Adanced Docker
+
+
+Chapter xx  : kubernetes
+Chapter xx  : mesosphere, dcos
+Chapter xx  : openshift
+Chapter xx  :
+Chapter xx  :
+Chapter xx  :
+Chapter xx  :
+Chapter xx  :
+Chapter xx  :
+Chapter xx  :
+Chapter xx  :
+Chapter xx  :
