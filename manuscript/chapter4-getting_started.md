@@ -55,7 +55,7 @@ Shared:
 
 ### Making Containers Persist
 
-``` docker run -d <image> <program> ```
+``` docker run -d schoolofdevops/loop program ```
 
 -d , --detach : detached mode  
 
@@ -84,4 +84,5 @@ TODO: add a table of go template formatters
 ### Stopping and Removing Containers
 
 ``` docker stop ```
+``` docker kill ```
 ``` docker rm ```

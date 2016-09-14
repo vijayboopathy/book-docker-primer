@@ -3,5 +3,5 @@ chapter1-introduction_to_containers_and_docker.md
 chapter2-microservices_and_docker.md
 chapter3-lerning_environment_setup.md
 chapter4-getting_started.md
-
+chapter5-container_operations.md
 {backmatter}
