@@ -13,13 +13,14 @@ As part of the tutorial, we are going to setup a shiny new blogging/publishing s
 
 
 Check the ip address of docker host.
-If using docker-machine,
+If using docker-machine,  
+
 ``` docker-machine ip default ```
 
 Find out the port mapping
 
 ```
-docker port ghost
+docker port ghost  
 2368/tcp -> 0.0.0.0:32769
 ```
 
@@ -76,9 +77,12 @@ https://docs.docker.com/engine/reference/commandline/attach/
 
 ### Copying files between container and client host
 
-``` touch srcfile ```
+``` touch srcfile ```  
+
 ``` docker cp srcfile ghost:/opt  ```
+
 ``` docker cp ghost:/usr/src/ghost . ```
+
 
 ### Rename a  container
 
@@ -155,7 +159,7 @@ Exercises
 Example: Running a sysdig container to monitor docker
 
 ```
-docker run -d --name=sysdig --privileged=true \
+docker run -itd --name=sysdig --privileged=true \
            --volume=/var/run/docker.sock:/host/var/run/docker.sock \
            --volume=/dev:/host/dev \
            --volume=/proc:/host/proc:ro \
@@ -165,9 +169,14 @@ docker run -d --name=sysdig --privileged=true \
            sysdig/sysdig:0.11.0 sysdig
 ```
 
-``` ```
+``` docker exec -it sysdig bash
+
+csysdig
+```
+
+TODO: after launching csysdig, select F2, select Containers and monitor those.
 
 
 ##### References
 
-[Resource Management in Docker by Marek Goldmann] https://goldmann.pl/blog/2014/09/11/resource-management-in-docker/
+[Resource Management in Docker by Marek Goldmann] (https://goldmann.pl/blog/2014/09/11/resource-management-in-docker/)

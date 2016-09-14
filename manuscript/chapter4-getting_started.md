@@ -39,9 +39,13 @@ TODO: what happened ?
 Namespaced:
 
 ``` cat /etc/issue ```
+
 ``` ps aux ```
+
 ``` ifconfig ```
+
 ``` hostname ```
+
 
 Shared:
 
