@@ -432,14 +432,14 @@ Now exit out of that container by running **exit** or by pressing **ctrl+d**
 ### Making Containers Persist  
 #### Running Containers in Detached Mode  
 So far, we have run the containers interactively. But this is not always the case. Sometimes you may want to start a container  without interacting with it. This can be achieved by using **"detached mode"** (**-d**) flag. Hence the container will launch the deafault application inside and run in the background. This saves a lot of time, we don't have to wait till the applications launches successfully. It will happen behind the screen. Let us run the following command to see this in action  
- 
+
 [Command]  
 ``` docker run -d schoolofdevops/loop program ```  
 -d , --detach : detached mode  
 [Output]  
 
-``` 
-
+```
+2533adf280ac4838b446e4ee1151f52793e6ac499d2e631b2c752459bb18ad5f
 ```  
 This will run the container in detached mode. We are only given with full container id as the output  
 
@@ -449,86 +449,103 @@ Let us check whether this container is running or not
 [Output]  
 
 ```
-
+CONTAINER ID        IMAGE                 COMMAND             CREATED             STATUS              PORTS               NAMES
+2533adf280ac        schoolofdevops/loop   "program"           37 seconds ago      Up 36 seconds                           prickly_bose
 ```  
 As we can see in the output, the container is running in the background  
 
 #### Connecting to running container to execute commands
 We can connect to the containers which are running in detached mode by using these following commands  
 [Command]  
-``` docker exec ```  
-``` docker exec -it ```  
+``` docker exec -it 2533adf280ac sh ```  
 [Output]  
 
 ```
-
+/ #
 ```  
+Now exit the container.  
 
 #### Pausing Running Container  
 Just like in a video, it is easy to pause and unpause the running container  
 [Command]  
-``` docker pause ```  
+``` docker pause 2533adf280ac ```  
+After running pause command, run docker ps again to check the container status  
 [Output]  
 
 ```
-
+CONTAINER ID        IMAGE                 COMMAND             CREATED             STATUS                  PORTS               NAMES
+2533adf280ac        schoolofdevops/loop   "program"           2 minutes ago       Up 2 minutes (Paused)                       prickly_bose
 ```  
+
+#### Unpausing the paused container  
+This can be achieved by executing following command  
 [Command]  
 ``` docker unpause ```  
+Run docker ps to verify the changes  
 [Output]  
 
 ```
-
+CONTAINER ID        IMAGE                 COMMAND             CREATED             STATUS              PORTS               NAMES
+2533adf280ac        schoolofdevops/loop   "program"           6 minutes ago       Up 6 minutes                            prickly_bose
 ```  
 
 ### Creating and Starting a Container instead of Running  
 docker **run** command will create a container and start that container simultaneously. However docker gives you the granularity to create a container and not to run it at the time of creation. However, This container can be started by using **start** command  
 
 [Command]  
-``` docker create ```  
+``` docker create alpine:3.4 sh ```  
+Run **docker ps -l** to see the status of the container  
 [Output]  
 
 ```
-
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+22146d15eb71        alpine:3.4          "sh"                31 seconds ago      Created                                 grave_leavitt
 ```  
+If you do **docker ps -l**, you will find that container status to be **Created**. Now lets start this container by executing,   
 [Command]  
-``` docker start ```  
+``` docker start 22146d15eb71```  
+Run docker ps -l again to see the status change  
 [Output]  
 
 ```
-
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+22146d15eb71        alpine:3.4          "sh"                3 minutes ago       Exited (0) 2 minutes ago                      grave_leavitt
 ```  
+This command will start the container and exit right away we have not specified interactive mode in the command  
 
 ### Creating Pretty Reports with Formatters
-``` docker ps --format ```
+``` docker ps --format "{{.ID}}: {{.Status}}" ```  
+[Output]  
 
-TODO: add a table of go template formatters
+```
+2533adf280ac: Up 12 minutes
+```  
 
 ### Stopping and Removing Containers
 We have learnt about interacting with a container, running a container, pausing and unpausing a container, creating and starting a container. But what if you want to stop the container or remove the container itself  
-
-A container can be stopped using **stop** command. This command will stop the application inside that container hence the container itself will be stopped  
+#### Stop a container  
+A container can be stopped using **stop** command. This command will stop the application inside that container hence the container itself will be stopped. This command basically sends a **SIGTERM** signal to the container (graceful shutdown)  
 [Command]  
-``` docker stop ```  
+``` docker stop 2533adf280ac ```  
 [Output]  
 
 ```
-
+2533adf280ac
 ```  
-TODO: Desc about kill
+#### Kill a container  
+This command will send **SIGKILL** signal and kills the container ungracefully  
 [Command]  
-``` docker kill ```  
+``` docker kill 590e7060743a ```  
 [Output]  
 
 ```
-
+590e7060743a
 ```  
-If you want to remove a container, then execute the following command  
+If you want to remove a container, then execute the following command. Before running this command, run docker ps -a to see the list of pre run containers. Choose a container of your wish and then execute docker rm command. Then run docker ps -a again to check the removed container list or not  
 [Command]  
-``` docker rm ```  
+``` docker rm 590e7060743a```  
 [Output]  
 
 ```
-
+590e7060743a
 ```  
-
