@@ -205,12 +205,12 @@ For more examples and ideas, visit:
 **What happened?**  
 This command will  
 * Pull the image file from **docker hub**, a cloud registry, about which we will explain in forthcoming chapters  
-* Creates a container using that image  
-* Runs an executable (called **hello-world**) inside that container  
+* Create a container using that image  
+* Run an executable (called **hello-world**) inside that container  
 * Put that output to the terminal  
-* Exits out of the container  
+* Exit out of the container  
 
-**Where did my container go?**
+**Where did my container go?**  
 The point here to remember is that, when that executable stops running inside the container, the container itself will stop  
 This process will further be explained under the **lifecycle of a container** topic. So don't bang your head by dwelling deep into this  
 
@@ -426,31 +426,78 @@ Swap:      1048572          0    1048572
 
 ```  
 
-##### Exiting Interactive mode
+Now exit out of that container by running **exit** or by pressing **ctrl+d**  
 
 
-### Making Containers Persist
-
-``` docker run -d schoolofdevops/loop program ```
-
+### Making Containers Persist  
+#### Running Containers in Detached Mode  
+So far, we have run the containers interactively. But this is not always the case. Sometimes you may want to start a container  without interacting with it. This can be achieved by using **"detached mode"** (**-d**) flag. Hence the container will launch the deafault application inside and run in the background. This saves a lot of time, we don't have to wait till the applications launches successfully. It will happen behind the screen. Let us run the following command to see this in action  
+ 
+[Command]  
+``` docker run -d schoolofdevops/loop program ```  
 -d , --detach : detached mode  
+[Output]  
 
-``` docker ps ```
+``` 
+
+```  
+This will run the container in detached mode. We are only given with full container id as the output  
+
+Let us check whether this container is running or not  
+[Command]  
+``` docker ps ```  
+[Output]  
+
+```
+
+```  
+As we can see in the output, the container is running in the background  
 
 #### Connecting to running container to execute commands
+We can connect to the containers which are running in detached mode by using these following commands  
+[Command]  
+``` docker exec ```  
+``` docker exec -it ```  
+[Output]  
 
-``` docker exec ```
-``` docker exec -it ```
+```
 
-#### Pausing Running Container
+```  
 
-``` docker pause ```
-``` docker unpause ```
+#### Pausing Running Container  
+Just like in a video, it is easy to pause and unpause the running container  
+[Command]  
+``` docker pause ```  
+[Output]  
 
-### Creating and Starting a Container instead of Running
+```
 
-``` docker create ```
-``` docker start ```
+```  
+[Command]  
+``` docker unpause ```  
+[Output]  
+
+```
+
+```  
+
+### Creating and Starting a Container instead of Running  
+docker **run** command will create a container and start that container simultaneously. However docker gives you the granularity to create a container and not to run it at the time of creation. However, This container can be started by using **start** command  
+
+[Command]  
+``` docker create ```  
+[Output]  
+
+```
+
+```  
+[Command]  
+``` docker start ```  
+[Output]  
+
+```
+
+```  
 
 ### Creating Pretty Reports with Formatters
 ``` docker ps --format ```
@@ -458,7 +505,30 @@ Swap:      1048572          0    1048572
 TODO: add a table of go template formatters
 
 ### Stopping and Removing Containers
+We have learnt about interacting with a container, running a container, pausing and unpausing a container, creating and starting a container. But what if you want to stop the container or remove the container itself  
 
-``` docker stop ```
-``` docker kill ```
-``` docker rm ```
+A container can be stopped using **stop** command. This command will stop the application inside that container hence the container itself will be stopped  
+[Command]  
+``` docker stop ```  
+[Output]  
+
+```
+
+```  
+TODO: Desc about kill
+[Command]  
+``` docker kill ```  
+[Output]  
+
+```
+
+```  
+If you want to remove a container, then execute the following command  
+[Command]  
+``` docker rm ```  
+[Output]  
+
+```
+
+```  
+
