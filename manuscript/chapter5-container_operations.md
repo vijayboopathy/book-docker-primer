@@ -1,39 +1,104 @@
 # Managing Containers - Learning about Common Container Operations
 
-In the previous chapter we learnt about container lifecycle management including how to create, launch, connect to, stop and remove containers. In this chapter, we are going to learn how to launch a container with a pre built app image and how to access the app with published ports. We will also learn about common  container operations such as inspecting container information, checking logs and performance stats, renaming and updating the properties of a container, limiting resources etc.  
+In the previous chapter, we have learnt about container lifecycle management including how to create, launch, connect to, stop and remove containers. In this chapter, we are going to learn how to launch a container with a pre built app image and how to access the app with published ports. We will also learn about common container operations such as inspecting container information, checking logs and performance stats, renaming and updating the properties of a container, limiting resources etc.  
 
+As part of the tutorial, we are going to setup a shiny new blogging/publishing site. To set it up, we will use a node.js based framework called **ghost**, a simple, fast, and SEO friendly alternative to more sophisticated publishing platforms such as wordpress. However, its purely gives us a blogging platform.  
 
-As part of the tutorial, we are going to setup a shiny new blogging/publishing site. To set it up we will use a node.js based framework called **ghost**, a simple, fast, and SEO friendly alternative to more sophisticated publishing platforms such as wordpress. However, its purely gives us a blogging platform.
+### Launching a container with a pre built app image  
 
-### Launching a container with a pre built app image
+To launch ghost container run the following command. Don't bother about the new falg **-P** now. We will explain about that flag later in ths chapter  
+```
+docker run -d -P ghost:0.10.1
+```  
+[Output]  
 
+```
+Unable to find image 'ghost:0.10.1' locally
+0.10.1: Pulling from library/ghost
 
-``` docker run -d -P ghost:0.10.1 ```
-``` docker ps ```
+8ad8b3f87b37: Pull complete
+751fe39c4d34: Pull complete
+3c8031bea3fa: Pull complete
+854b52827bb4: Pull complete
+f2c2db6ff75a: Pull complete
+8e874614dce5: Pull complete
+3aa1c5caad55: Pull complete
+0cb1edc0454a: Pull complete
+6d8ba59589a6: Pull complete
+bff20c590458: Pull complete
+Digest: sha256:2258f67d3cc513dbf205d5e793e6a9d7359ba28cf16fc5dce08b4e5d2b982245
+Status: Downloaded newer image for ghost:0.10.1
+3e3b4f0b54dc6d24ee95f24dcbd6472fce541568e1fbb56c982913ca4cb58e15
+```
+Lets check the status of the container  
+```
+docker ps
+```  
+[Output]  
 
+```
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                     NAMES
+3e3b4f0b54dc        ghost:0.10.1        "/entrypoint.sh npm s"   7 seconds ago       Up 5 seconds        0.0.0.0:32768->2368/tcp  hungry_lalande
+```  
 
-Check the ip address of docker host.
-If using docker-machine,  
+### Renaming the container  
+We can rename the container by using following command  
+```
+docker rename hungry_lalande ghost
+```  
+We have changed container's automatically generated name to ghost. This new name can be of your choice. The point to understand is this command takes two arguments. The **Old_name followed by New_name**
+Run docker ps command to check the effect of changes  
+```
+docker ps
+```  
+[Output]  
 
-``` docker-machine ip default ```
+```
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                     NAMES
+3e3b4f0b54dc        ghost:0.10.1        "/entrypoint.sh npm s"   12 minutes ago      Up 12 minutes       0.0.0.0:32768->2368/tcp   ghost
+```  
+As you can see here, the container is renamed to **ghost**. This makes referencing container in cli very much easier.  
 
-Find out the port mapping
+### Ready to experience Ghost?  
+Let's see what this **ghost** application does by connecting to that application. For that we need,  
+  * Host machine's IP  
+  * Container's port which is mapped to a host's port
+To find out host machine's IP, we will use **docker machine**. More about this docker orchestration utility will be explained later in the book. The same can be achieved by running a simple ifconfig command in the host machine. But if you understand what docker machine command can do from the starting itself, it will benefit you to understand about this utility quite easily  
+
+``` docker-machine ip default ```  
+
+**TODO:Command is not working - Host does not exist **  
+
+Let's find out the port mapping of container to host. Docker provides subcommand called **port** which does this job  
 
 ```
 docker port ghost  
-2368/tcp -> 0.0.0.0:32769
+```  
+[Output]  
+
 ```
+2368/tcp -> 0.0.0.0:32768
+```  
+So whatever traffic the host gets in port **2368** will be mapped to container's port **32768**  
 
-Connect to http://IP_ADDRESS:PORT
+Let's connect to http://IP_ADDRESS:PORT to see the actual application  
 
-TODO: add ghost welcome screen screenshot
+![ghost-welcome](images/ghost-welcome.png)
 
-### Configure blog and add some content
+### Configure blog and add some content  
+Let us set up ghost now. Let log into admin console of ghost by visiting following URL  
+```
+http://HOST:PORT/ghost
+```  
+Now follow these instructions  
+![setup](images/setup-1.png)  
+![setup](images/setup-2.png)  
+![setup](images/setup-3.png)  
+![setup](images/setup-4.png)  
+![setup](images/setup-5.png)  
 
-Admin console is at
- http://HOST:PORT/ghost
-
-TODO: add instructions to setup ghost, create account and publish first post. provide some sample markdown content in the code/chap5 dir which they could copy and paste.
+There you go. Now you have successfully published an article on ghost  
+Visit the homepage again to see it  
 
 ### Finding Everything about the running  container
 
