@@ -6,11 +6,20 @@ operations such as creating, starting, stopping, removing, pausing containers an
 
 
 ### Using docker cli  
+
 We can use docker cli to interact with docker daemon. Various functions of docker command is given below. Try this yourself by runnig **$sudo docker** command  
 
-``` sudo docker ```  
 
-[Output]  
+```
+
+sudo docker
+
+
+```  
+
+
+[Output]
+
 ```
 Usage: docker [OPTIONS] COMMAND [arg...]
        docker [ --help | -v | --version ]
@@ -83,16 +92,24 @@ Commands:
 #### Getting Information about Docker Setup  
 We can get the information about our Docker setup in several ways. Namely,  
 
-``` docker -v ```  
-``` docker version ```  
-``` docker info ```  
+```
 
-[Output of **docker -v**]  
+docker -v   
+
+docker version
+
+docker info
+
+```  
+
+[Output of **docker -v**]
+
 ```
 Docker version 1.12.1, build 23cf638
 ```  
 
 [Output of **docker version**]  
+
 ```
 Client:
  Version:      1.12.1
@@ -109,9 +126,11 @@ Server:
  Git commit:   23cf638
  Built:
  OS/Arch:      linux/amd64
+
 ```  
 
 [Output of **docker info**]  
+
 ```
 Containers: 10
  Running: 0
@@ -165,15 +184,22 @@ Registry: https://index.docker.io/v1/
 Insecure Registries:
  127.0.0.0/8
 
+
 ```  
 The **docker info** command gives a lot of useful information like total number of containers and images along with information about host resource utilization  
 
 ### Launching our first container  
 Now we have a basic understanding of docker command and sub commands, let us dive straight into launching our very first **container**  
 
-``` docker run hello-world```  
+
+```
+
+docker run hello-world
+
+```  
 
 [Output]  
+
 ```
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
@@ -201,34 +227,40 @@ Share images, automate workflows, and more with a free Docker Hub account:
 
 For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
+
 ```  
+
 **What happened?**  
 This command will  
-* Pull the image file from **docker hub**, a cloud registry, about which we will explain in forthcoming chapters  
-* Creates a container using that image  
-* Runs an executable (called **hello-world**) inside that container  
-* Put that output to the terminal  
-* Exits out of the container  
+  * Pull the image file from **docker hub**, a cloud registry, about which we will explain in forthcoming chapters  
+  * Creates a container using that image  
+  * Runs an executable (called **hello-world**) inside that container  
+  * Put that output to the terminal  
+  * Exits out of the container  
+
 
 **Where did my container go?**
+
 The point here to remember is that, when that executable stops running inside the container, the container itself will stop  
 This process will further be explained under the **lifecycle of a container** topic. So don't bang your head by dwelling deep into this  
 
 Let's see what happens when we run that command again,  
+
 [Output]  
+
 ```
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 
 To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
- 3. The Docker daemon created a new container from that image which runs the
+  1. The Docker client contacted the Docker daemon.
+  1. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+  1. The Docker daemon created a new container from that image which runs the
     executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
+  1. The Docker daemon streamed that output to the Docker client, which sent it to your terminal.
 
 To try something more ambitious, you can run an Ubuntu container with:
+
  $ docker run -it ubuntu bash
 
 Share images, automate workflows, and more with a free Docker Hub account:
@@ -237,39 +269,67 @@ Share images, automate workflows, and more with a free Docker Hub account:
 For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
 
+
 ```  
-Now docker no longer pulls the image again from registry, because **it has stored the image locally** from the previous run  
-So once an image is pulled, we can make use of that image to create and run as many container as we want without the need of downloading the image again and again  
+
+
+Now docker no longer pulls the image again from registry, because **it has stored the image locally** from the previous run. So once an image is pulled, we can make use of that image to create and run as many container as we want without the need of downloading the image again and again  
 
 ### Checking Status of the containers  
+
+
 We have understood how docker run commands works. But what if you want to see list of running containers and history of containers that had run and exited? This can be done by executing the following commands  
 
-``` docker ps ```  
+```
+docker ps
+
+```  
+
 [Output]  
+
 ```
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```  
+
 This command doesn't give us any information. Because, **docker ps** command will only show list of container(s) which are **running**  
 
-``` docker ps -l```  
+```
+docker ps -l
+
+```  
+
 [Output]  
+
 ```
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
 e2c4890c78da        hello-world         "/hello"            8 minutes ago       Exited (0) 8 minutes ago                       boring_jennings
 ```  
+
 the **-l** flag shows the last run container along with other details like image it used, command it executed, return code of that command, etc.,  
 
-``` docker ps -n 2 ```  
+```
+docker ps -n 2
+
+```  
+
 [Output]  
+
+
 ```
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
 adf9e6d80c13        busybox             "sh"                38 seconds ago      Exited (0) 37 seconds ago                       romantic_nobel
 e2c4890c78da        hello-world         "/hello"            14 minutes ago      Exited (0) 14 minutes ago                       boring_jennings
+
 ```  
+
 Docker gives us the flexibility to show the desirable number of last run containers. This can be achieved by using **-n #no_of_results** flag  
 
-``` docker ps -a ```  
+```
+docker ps -a
+```  
+
 [Output]  
+
 ```
 CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                      PORTS               NAMES
 d2c3c5c52067        nginx               "nginx -g 'daemon off"   About a minute ago   Exited (0) 8 seconds ago                        modest_hodgkin
@@ -278,6 +338,7 @@ e2c4890c78da        hello-world         "/hello"                 18 minutes ago 
 53d0b6c2f6c8        hello-world         "/hello"                 30 minutes ago       Exited (0) 30 minutes ago                       naughty_brattain
 
 ```  
+
 This command will show all the container we have run so far.  
 
 ### Running Containers in Interactive Mode
@@ -285,8 +346,12 @@ We can interact with docker containers by giving -it flags at the run time. Thes
   * i - Interactive  
   * t - tty
 
-``` docker run -it alpine:3.4 sh ```  
+```
+docker run -it alpine:3.4 sh
+```  
+
 [Output]  
+
 ```
 Unable to find image 'alpine:3.4' locally
 3.4: Pulling from library/alpine
@@ -296,6 +361,7 @@ Digest: sha256:3dcdb92d7432d56604d4545cbd324b14e647b313626d99b889d0626de158f73a
 Status: Downloaded newer image for alpine:3.4
 / #
 ```  
+
 As you see, we have landed straight into **sh** shell of that container. This is the result of using **-it** flags and mentioning that container to run the **sh** shell. Don't try to exit that container yet. We have to execute some other commands in it to understand the next topic  
 
 Namespaced:
@@ -306,7 +372,10 @@ This enables Docker container to isolate itself from the host as well as other c
 Run the following commands and see that alpine container has its own namespaces and not inheriting much from **host OS**  
 
 [Command]  
-``` cat /etc/issue ```  
+```
+cat /etc/issue
+```  
+
 [Output]  
 
 ```
@@ -315,7 +384,10 @@ Kernel \r on an \m (\l)
 ```  
 
 [Command]  
-``` ps aux ```  
+```
+ ps aux
+```  
+
 [Output]  
 
 ```
@@ -325,7 +397,11 @@ PID   USER     TIME   COMMAND
 ```  
 
 [Command]  
-``` ifconfig ```  
+
+```
+ifconfig
+```  
+
 [Output]  
 
 ```
@@ -349,7 +425,9 @@ lo        Link encap:Local Loopback
 ```  
 
 [Command]  
-``` hostname ```
+```
+ hostname
+```
 [Output]   
 
 ```
@@ -360,7 +438,10 @@ Shared:
 We have understood that containers have their own namespaces. But will they share something to some extent? the answer is **YES**. Let's run the following commands on both the container and the host machine  
 
 [Command]  
-``` uname -a ```  
+```
+uname -a
+
+```  
 [Output - **container**]  
 
 ```
@@ -415,7 +496,10 @@ power management:
 ```
 
 [Command]  
-``` free ```  
+```
+free
+
+```  
 [Output]  
 
 ```
@@ -431,34 +515,71 @@ Swap:      1048572          0    1048572
 
 ### Making Containers Persist
 
-``` docker run -d schoolofdevops/loop program ```
+```
+docker run -d schoolofdevops/loop program
+```
 
 -d , --detach : detached mode  
 
-``` docker ps ```
+```
+docker ps
+
+```
 
 #### Connecting to running container to execute commands
 
-``` docker exec ```
-``` docker exec -it ```
+```
+docker exec
+
+```
+```
+docker exec -it
+
+```
 
 #### Pausing Running Container
 
-``` docker pause ```
-``` docker unpause ```
+```
+
+docker pause
+
+```
+
+```
+
+docker unpause
+
+```
 
 ### Creating and Starting a Container instead of Running
 
-``` docker create ```
-``` docker start ```
+```
+docker create
+```
+
+```
+docker start
+```
 
 ### Creating Pretty Reports with Formatters
-``` docker ps --format ```
+```
+docker ps --format
+```
 
 TODO: add a table of go template formatters
 
 ### Stopping and Removing Containers
 
-``` docker stop ```
-``` docker kill ```
-``` docker rm ```
+```
+docker stop
+```
+
+```
+docker kill
+
+```
+
+```
+docker rm
+
+```
