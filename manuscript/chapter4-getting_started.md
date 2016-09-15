@@ -8,7 +8,9 @@ operations such as creating, starting, stopping, removing, pausing containers an
 ### Using docker cli  
 We can use docker cli to interact with docker daemon. Various functions of docker command is given below. Try this yourself by runnig **$sudo docker** command  
 
-``` sudo docker ```  
+```
+sudo docker
+```  
 
 [Output]  
 ```
@@ -83,16 +85,22 @@ Commands:
 #### Getting Information about Docker Setup  
 We can get the information about our Docker setup in several ways. Namely,  
 
-``` docker -v ```  
-``` docker version ```  
-``` docker info ```  
+```
+docker -v  
+
+docker version  
+
+docker info  
+```  
 
 [Output of **docker -v**]  
+
 ```
 Docker version 1.12.1, build 23cf638
 ```  
 
 [Output of **docker version**]  
+
 ```
 Client:
  Version:      1.12.1
@@ -171,7 +179,9 @@ The **docker info** command gives a lot of useful information like total number 
 ### Launching our first container  
 Now we have a basic understanding of docker command and sub commands, let us dive straight into launching our very first **container**  
 
-``` docker run hello-world```  
+```
+docker run hello-world
+```  
 
 [Output]  
 ```
@@ -201,20 +211,24 @@ Share images, automate workflows, and more with a free Docker Hub account:
 
 For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
+
 ```  
+
 **What happened?**  
 This command will  
-* Pull the image file from **docker hub**, a cloud registry, about which we will explain in forthcoming chapters  
-* Create a container using that image  
-* Run an executable (called **hello-world**) inside that container  
-* Put that output to the terminal  
-* Exit out of the container  
+  * Pull the image file from **docker hub**, a cloud registry, about which we will explain in forthcoming chapters  
+  * Create a container using that image  
+  * Run an executable (called **hello-world**) inside that container  
+  * Put that output to the terminal  
+  * Exit out of the container  
 
 **Where did my container go?**  
+
 The point here to remember is that, when that executable stops running inside the container, the container itself will stop  
 This process will further be explained under the **lifecycle of a container** topic. So don't bang your head by dwelling deep into this  
 
 Let's see what happens when we run that command again,  
+
 [Output]  
 ```
 Hello from Docker!
@@ -229,6 +243,7 @@ To generate this message, Docker took the following steps:
     to your terminal.
 
 To try something more ambitious, you can run an Ubuntu container with:
+
  $ docker run -it ubuntu bash
 
 Share images, automate workflows, and more with a free Docker Hub account:
@@ -238,38 +253,55 @@ For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
 
 ```  
+
 Now docker no longer pulls the image again from registry, because **it has stored the image locally** from the previous run  
 So once an image is pulled, we can make use of that image to create and run as many container as we want without the need of downloading the image again and again  
 
 ### Checking Status of the containers  
+
 We have understood how docker run commands works. But what if you want to see list of running containers and history of containers that had run and exited? This can be done by executing the following commands  
 
-``` docker ps ```  
+```
+docker ps
+```  
+
 [Output]  
+
 ```
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```  
 This command doesn't give us any information. Because, **docker ps** command will only show list of container(s) which are **running**  
 
-``` docker ps -l```  
+```
+docker ps -l
+```  
+
 [Output]  
+
 ```
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
 e2c4890c78da        hello-world         "/hello"            8 minutes ago       Exited (0) 8 minutes ago                       boring_jennings
 ```  
 the **-l** flag shows the last run container along with other details like image it used, command it executed, return code of that command, etc.,  
 
-``` docker ps -n 2 ```  
+```
+docker ps -n 2
+```  
 [Output]  
 ```
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
 adf9e6d80c13        busybox             "sh"                38 seconds ago      Exited (0) 37 seconds ago                       romantic_nobel
 e2c4890c78da        hello-world         "/hello"            14 minutes ago      Exited (0) 14 minutes ago                       boring_jennings
+
 ```  
 Docker gives us the flexibility to show the desirable number of last run containers. This can be achieved by using **-n #no_of_results** flag  
 
-``` docker ps -a ```  
+```
+docker ps -a
+```  
+
 [Output]  
+
 ```
 CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                      PORTS               NAMES
 d2c3c5c52067        nginx               "nginx -g 'daemon off"   About a minute ago   Exited (0) 8 seconds ago                        modest_hodgkin
@@ -285,8 +317,12 @@ We can interact with docker containers by giving -it flags at the run time. Thes
   * i - Interactive  
   * t - tty
 
-``` docker run -it alpine:3.4 sh ```  
+```
+docker run -it alpine:3.4 sh
+```  
+
 [Output]  
+
 ```
 Unable to find image 'alpine:3.4' locally
 3.4: Pulling from library/alpine
@@ -296,6 +332,7 @@ Digest: sha256:3dcdb92d7432d56604d4545cbd324b14e647b313626d99b889d0626de158f73a
 Status: Downloaded newer image for alpine:3.4
 / #
 ```  
+
 As you see, we have landed straight into **sh** shell of that container. This is the result of using **-it** flags and mentioning that container to run the **sh** shell. Don't try to exit that container yet. We have to execute some other commands in it to understand the next topic  
 
 Namespaced:
@@ -306,7 +343,10 @@ This enables Docker container to isolate itself from the host as well as other c
 Run the following commands and see that alpine container has its own namespaces and not inheriting much from **host OS**  
 
 [Command]  
-``` cat /etc/issue ```  
+```
+cat /etc/issue
+```  
+
 [Output]  
 
 ```
@@ -315,7 +355,10 @@ Kernel \r on an \m (\l)
 ```  
 
 [Command]  
-``` ps aux ```  
+```
+ps aux
+```  
+
 [Output]  
 
 ```
@@ -325,7 +368,10 @@ PID   USER     TIME   COMMAND
 ```  
 
 [Command]  
-``` ifconfig ```  
+```
+ifconfig
+```  
+
 [Output]  
 
 ```
@@ -349,7 +395,10 @@ lo        Link encap:Local Loopback
 ```  
 
 [Command]  
-``` hostname ```
+```
+hostname
+```  
+
 [Output]   
 
 ```
@@ -360,11 +409,15 @@ Shared:
 We have understood that containers have their own namespaces. But will they share something to some extent? the answer is **YES**. Let's run the following commands on both the container and the host machine  
 
 [Command]  
-``` uname -a ```  
+```
+uname -a
+```  
+
 [Output - **container**]  
 
 ```
 Linux ae84d253ecb5 3.10.0-327.28.3.el7.x86_64 #1 SMP Thu Aug 18 19:05:49 UTC 2016 x86_64 Linux
+
 ```
 
 [Output - **hostmachine**]  
@@ -376,16 +429,22 @@ Linux dockerserver 3.10.0-327.28.3.el7.x86_64 #1 SMP Thu Aug 18 19:05:49 UTC 201
 As you can see, the container uses the same Linux Kernel from the host machine. Just like **uname** command, the following commands share the same information as well. In order to avoid repetition, we will see the output of container alone.
 
 [Command]  
-``` date ```  
-[Output]  
+```
+date  
+```  
+
+[Output]    
 
 ```
 Wed Sep 14 18:21:25 UTC 2016
 ```  
 
 [Command]  
-``` cat /proc/cpuinfo ```
-[Output]  
+```
+cat /proc/cpuinfo
+```  
+
+[Output]    
 
 ```
 processor       : 0
@@ -415,7 +474,10 @@ power management:
 ```
 
 [Command]  
-``` free ```  
+```
+free
+```  
+
 [Output]  
 
 ```
@@ -434,8 +496,13 @@ Now exit out of that container by running **exit** or by pressing **ctrl+d**
 So far, we have run the containers interactively. But this is not always the case. Sometimes you may want to start a container  without interacting with it. This can be achieved by using **"detached mode"** (**-d**) flag. Hence the container will launch the deafault application inside and run in the background. This saves a lot of time, we don't have to wait till the applications launches successfully. It will happen behind the screen. Let us run the following command to see this in action  
 
 [Command]  
-``` docker run -d schoolofdevops/loop program ```  
+
+```
+docker run -d schoolofdevops/loop program
+```  
+
 -d , --detach : detached mode  
+
 [Output]  
 
 ```
@@ -445,7 +512,10 @@ This will run the container in detached mode. We are only given with full contai
 
 Let us check whether this container is running or not  
 [Command]  
-``` docker ps ```  
+```
+docker ps
+```  
+
 [Output]  
 
 ```
@@ -457,7 +527,10 @@ As we can see in the output, the container is running in the background
 #### Connecting to running container to execute commands
 We can connect to the containers which are running in detached mode by using these following commands  
 [Command]  
-``` docker exec -it 2533adf280ac sh ```  
+```
+docker exec -it 2533adf280ac sh
+```  
+
 [Output]  
 
 ```
@@ -468,8 +541,13 @@ Now exit the container.
 #### Pausing Running Container  
 Just like in a video, it is easy to pause and unpause the running container  
 [Command]  
-``` docker pause 2533adf280ac ```  
+
+```
+docker pause 2533adf280ac
+```  
+
 After running pause command, run docker ps again to check the container status  
+
 [Output]  
 
 ```
@@ -479,9 +557,14 @@ CONTAINER ID        IMAGE                 COMMAND             CREATED           
 
 #### Unpausing the paused container  
 This can be achieved by executing following command  
+
 [Command]  
-``` docker unpause ```  
+```
+docker unpause
+```  
+
 Run docker ps to verify the changes  
+
 [Output]  
 
 ```
@@ -493,18 +576,29 @@ CONTAINER ID        IMAGE                 COMMAND             CREATED           
 docker **run** command will create a container and start that container simultaneously. However docker gives you the granularity to create a container and not to run it at the time of creation. However, This container can be started by using **start** command  
 
 [Command]  
-``` docker create alpine:3.4 sh ```  
+
+```
+docker create alpine:3.4 sh
+```  
+
 Run **docker ps -l** to see the status of the container  
+
 [Output]  
 
 ```
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 22146d15eb71        alpine:3.4          "sh"                31 seconds ago      Created                                 grave_leavitt
 ```  
+
 If you do **docker ps -l**, you will find that container status to be **Created**. Now lets start this container by executing,   
+
 [Command]  
-``` docker start 22146d15eb71```  
+
+```
+docker start 22146d15eb71
+```  
 Run docker ps -l again to see the status change  
+
 [Output]  
 
 ```
@@ -514,7 +608,10 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 This command will start the container and exit right away we have not specified interactive mode in the command  
 
 ### Creating Pretty Reports with Formatters
-``` docker ps --format "{{.ID}}: {{.Status}}" ```  
+```
+docker ps --format "{{.ID}}: {{.Status}}"
+```
+
 [Output]  
 
 ```
@@ -523,10 +620,15 @@ This command will start the container and exit right away we have not specified 
 
 ### Stopping and Removing Containers
 We have learnt about interacting with a container, running a container, pausing and unpausing a container, creating and starting a container. But what if you want to stop the container or remove the container itself  
+
 #### Stop a container  
 A container can be stopped using **stop** command. This command will stop the application inside that container hence the container itself will be stopped. This command basically sends a **SIGTERM** signal to the container (graceful shutdown)  
+
 [Command]  
-``` docker stop 2533adf280ac ```  
+
+```
+docker stop 2533adf280ac
+```  
 [Output]  
 
 ```
@@ -534,16 +636,26 @@ A container can be stopped using **stop** command. This command will stop the ap
 ```  
 #### Kill a container  
 This command will send **SIGKILL** signal and kills the container ungracefully  
+
 [Command]  
-``` docker kill 590e7060743a ```  
+
+```
+docker kill 590e7060743a
+```  
+
 [Output]  
 
 ```
 590e7060743a
 ```  
 If you want to remove a container, then execute the following command. Before running this command, run docker ps -a to see the list of pre run containers. Choose a container of your wish and then execute docker rm command. Then run docker ps -a again to check the removed container list or not  
+
 [Command]  
-``` docker rm 590e7060743a```  
+
+```
+docker rm 590e7060743a
+```  
+
 [Output]  
 
 ```
