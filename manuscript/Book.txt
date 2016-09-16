@@ -4,4 +4,5 @@ chapter2-microservices_and_docker.md
 chapter3-lerning_environment_setup.md
 chapter4-getting_started.md
 chapter5-container_operations.md
+chapter6-dockerizing-your-apps.md
 {backmatter}
