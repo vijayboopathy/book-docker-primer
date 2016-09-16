@@ -6,9 +6,9 @@ As part of the tutorial, we are going to setup a shiny new blogging/publishing s
 
 ### Launching a container with a pre built app image  
 
-To launch ghost container run the following command. Don't bother about the new falg **-P** now. We will explain about that flag later in ths chapter  
+To launch ghost container run the following command. Don't bother about the new flag **-P** now. We will explain about that flag later in this chapter  
 ```
-docker run -d -P ghost:0.10.1
+docker run -itd -P ghost:0.10.1
 ```  
 [Output]  
 
@@ -465,44 +465,104 @@ GET /hi-there/ 200 131.892 ms - -
 ```  
 Now try to read the articles available in our blog and see the log output gets updated in real-time. Hit **ctrl+c** to break the stream  
 
+### Stream events from a container  
+Docker **events** serves us with the stream of events or interactions that are happening with the docker daemon. This does not stream the log data of application inside the container. That is done by **docker logs** command. Let us see how this command works  
+Open an another terminal *(git bash)* from *vagrant parent directory* and ssh into your Docker host. Now you should have two terminals for  the same machine **(Docker host)**. Let us call the old terminal as **Terminal 1** and the newer one as **Terminal 2**.
 
-Get Event Stream from the Docker Daemon
+From Terminal 1, execute **docker events**. Now you are getting the data stream from docker daemon  
 
 ```
 docker events
-```
-
-[Tip: keep one windows open with docker events command running. Open another windows and
-do some operations such as run, stop rm to see event stream updated live]
-
-Also keep the event stream on in one terminal and start executing rest of the commands in a new terminal.
-
-
-### Attach to the container
-
-```
-docker attach
-```
-
-try ctrl=p ctrl=q to detach
-learn how to pverride detach sequence with  --detach-keys
-https://docs.docker.com/engine/reference/commandline/attach/
-
-
-### Copying files between container and client host
-
-```
-touch srcfile
 ```  
 
-```
-docker cp srcfile ghost:/opt  
-```
+To understand how this command actually works, let us run a container from Terminal 2  
 
 ```
-docker cp ghost:/usr/src/ghost .
-```
+docker run -ti alpine:3.4 sh  
+```  
 
+If you see, in Terminal 1, the interaction with docker daemon, while running that container will be printed  
+
+[Output - **Terminal 1**]  
+
+```
+2016-09-16T13:00:20.189028004Z container create 816fcc5e9c8dca13c76f3ff4546a7769bed497c4f4153b20ec34459c88f7b923 (image=alpine:3.4, name=tiny_franklin)
+2016-09-16T13:00:20.190190470Z container attach 816fcc5e9c8dca13c76f3ff4546a7769bed497c4f4153b20ec34459c88f7b923 (image=alpine:3.4, name=tiny_franklin)
+2016-09-16T13:00:20.257068692Z network connect c0237b5406920749b87460597b8935adf958bae1ce997afd827921a0dbc97cdc (container=816fcc5e9c8dca13c76f3ff4546a7769bed497c4f4153b20ec34459c88f7b923, name=bridge, type=bridge)
+2016-09-16T13:00:20.346533821Z container start 816fcc5e9c8dca13c76f3ff4546a7769bed497c4f4153b20ec34459c88f7b923 (image=alpine:3.4, name=tiny_franklin)
+2016-09-16T13:00:20.347811877Z container resize 816fcc5e9c8dca13c76f3ff4546a7769bed497c4f4153b20ec34459c88f7b923 (height=41, image=alpine:3.4, name=tiny_franklin, width=126)
+```  
+
+Try to do various docker operations (start, stop, rm, etc.,) and see the output in Terminal 1  
+
+### Attach to the container  
+Normally, when we run a container, we use **-d** flag to run that container in detached mode. But sometimes you might require to make some changes inside that container. In those kind of situations, we can use **attach** command. This command attaches to the tty of docker container. So it will stream the output of the application. In our case, we will see the output of ghost application  
+
+```
+docker attach ghost
+```  
+Hit our blogs url several times to see the output  
+
+[Output]  
+
+```
+POST /ghost/api/v0.1/authentication/token 200 418.439 ms - -
+GET /ghost/api/v0.1/settings/?type=blog%2Ctheme%2Cprivate 200 69.950 ms - -
+GET /ghost/img/invite-placeholder.png 200 1.279 ms - 7860
+GET /ghost/img/users.png 200 4.739 ms - 49253
+GET /ghost/api/v0.1/users/me/?include=roles&status=all 200 64.548 ms - 726
+GET /ghost/api/v0.1/notifications/ 200 43.159 ms - 513
+GET /ghost/api/v0.1/posts/?page=1&limit=15&status=all&staticPages=all&include=tags 200 61.997 ms - -
+GET /ghost/img/ghosticon.jpg 200 2.592 ms - 2499
+
+```  
+
+You can detach from the tty by pressing **ctrl-p + ctrl-q** in sequence. If you haven't started your container with ** -itd ** flag, then it is not possible to get your host's terminal back. In that case, If you haven't started the container with **-itd** option, then you have to use **--sig-proxy=false** falg with the attach command.  Then you will be able to detach from the container by using **ctrl-c**  
+It is possible to override these keys too. For that we have to add --detach-keys flag to the command. To learn more, click on the following URL  
+
+https://docs.docker.com/engine/reference/commandline/attach/  
+
+### Copying files between container and client host  
+
+We can copy files/directories form host to container and vice-versa    
+Let us create a file on the host  
+```
+touch testfile
+```  
+
+To copy the testfile **from host machine to ghsot contanier**, try  
+```
+docker cp testfile ghost:/opt  
+```  
+This command will copy testfile to ghost container's **/opt** directory  and will not give any output. To verify the file has been copies or not, let us log into container by running,  
+
+```
+docker exec -it ghost bash
+```  
+Change directory into /opt and list the files  
+
+```
+cd /opt  
+ls
+```  
+
+[Output]  
+
+```
+testfile
+```  
+
+There you can see that file has been successfully copied. Now exit the container  
+
+Now you may try to cp some files **from the container to the host machine**  
+Before that you have to change host machine's current working directory to **/vagrant**. This has to be done, because the CentOS VM is **mounted** that directory only.  
+
+```
+cd /vagrant  
+docker cp ghost:/usr/src/ghost .  
+ls  
+```  
+You might get some protocol errors. The error because it tries to create a symlink to a file on host machine, which does not exist.  
 
 ### Rename a  container
 
