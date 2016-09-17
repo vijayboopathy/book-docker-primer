@@ -6,20 +6,13 @@ operations such as creating, starting, stopping, removing, pausing containers an
 
 
 ### Using docker cli  
-
 We can use docker cli to interact with docker daemon. Various functions of docker command is given below. Try this yourself by runnig **$sudo docker** command  
 
-
 ```
-
 sudo docker
-
-
 ```  
 
-
-[Output]
-
+[Output]  
 ```
 Usage: docker [OPTIONS] COMMAND [arg...]
        docker [ --help | -v | --version ]
@@ -93,16 +86,14 @@ Commands:
 We can get the information about our Docker setup in several ways. Namely,  
 
 ```
+docker -v  
 
-docker -v   
+docker version  
 
-docker version
-
-docker info
-
+docker info  
 ```  
 
-[Output of **docker -v**]
+[Output of **docker -v**]  
 
 ```
 Docker version 1.12.1, build 23cf638
@@ -126,11 +117,9 @@ Server:
  Git commit:   23cf638
  Built:
  OS/Arch:      linux/amd64
-
 ```  
 
 [Output of **docker info**]  
-
 ```
 Containers: 10
  Running: 0
@@ -184,22 +173,17 @@ Registry: https://index.docker.io/v1/
 Insecure Registries:
  127.0.0.0/8
 
-
 ```  
 The **docker info** command gives a lot of useful information like total number of containers and images along with information about host resource utilization  
 
 ### Launching our first container  
 Now we have a basic understanding of docker command and sub commands, let us dive straight into launching our very first **container**  
 
-
 ```
-
 docker run hello-world
-
 ```  
 
 [Output]  
-
 ```
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
@@ -233,13 +217,12 @@ For more examples and ideas, visit:
 **What happened?**  
 This command will  
   * Pull the image file from **docker hub**, a cloud registry, about which we will explain in forthcoming chapters  
-  * Creates a container using that image  
-  * Runs an executable (called **hello-world**) inside that container  
+  * Create a container using that image  
+  * Run an executable (called **hello-world**) inside that container  
   * Put that output to the terminal  
-  * Exits out of the container  
+  * Exit out of the container  
 
-
-**Where did my container go?**
+**Where did my container go?**  
 
 The point here to remember is that, when that executable stops running inside the container, the container itself will stop  
 This process will further be explained under the **lifecycle of a container** topic. So don't bang your head by dwelling deep into this  
@@ -247,17 +230,17 @@ This process will further be explained under the **lifecycle of a container** to
 Let's see what happens when we run that command again,  
 
 [Output]  
-
 ```
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 
 To generate this message, Docker took the following steps:
-  1. The Docker client contacted the Docker daemon.
-  1. The Docker daemon pulled the "hello-world" image from the Docker Hub.
-  1. The Docker daemon created a new container from that image which runs the
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+ 3. The Docker daemon created a new container from that image which runs the
     executable that produces the output you are currently reading.
-  1. The Docker daemon streamed that output to the Docker client, which sent it to your terminal.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
 
 To try something more ambitious, you can run an Ubuntu container with:
 
@@ -269,20 +252,17 @@ Share images, automate workflows, and more with a free Docker Hub account:
 For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
 
-
 ```  
 
-
-Now docker no longer pulls the image again from registry, because **it has stored the image locally** from the previous run. So once an image is pulled, we can make use of that image to create and run as many container as we want without the need of downloading the image again and again  
+Now docker no longer pulls the image again from registry, because **it has stored the image locally** from the previous run  
+So once an image is pulled, we can make use of that image to create and run as many container as we want without the need of downloading the image again and again  
 
 ### Checking Status of the containers  
-
 
 We have understood how docker run commands works. But what if you want to see list of running containers and history of containers that had run and exited? This can be done by executing the following commands  
 
 ```
 docker ps
-
 ```  
 
 [Output]  
@@ -290,12 +270,10 @@ docker ps
 ```
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```  
-
 This command doesn't give us any information. Because, **docker ps** command will only show list of container(s) which are **running**  
 
 ```
 docker ps -l
-
 ```  
 
 [Output]  
@@ -304,24 +282,18 @@ docker ps -l
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
 e2c4890c78da        hello-world         "/hello"            8 minutes ago       Exited (0) 8 minutes ago                       boring_jennings
 ```  
-
 the **-l** flag shows the last run container along with other details like image it used, command it executed, return code of that command, etc.,  
 
 ```
 docker ps -n 2
-
 ```  
-
 [Output]  
-
-
 ```
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
 adf9e6d80c13        busybox             "sh"                38 seconds ago      Exited (0) 37 seconds ago                       romantic_nobel
 e2c4890c78da        hello-world         "/hello"            14 minutes ago      Exited (0) 14 minutes ago                       boring_jennings
 
 ```  
-
 Docker gives us the flexibility to show the desirable number of last run containers. This can be achieved by using **-n #no_of_results** flag  
 
 ```
@@ -338,7 +310,6 @@ e2c4890c78da        hello-world         "/hello"                 18 minutes ago 
 53d0b6c2f6c8        hello-world         "/hello"                 30 minutes ago       Exited (0) 30 minutes ago                       naughty_brattain
 
 ```  
-
 This command will show all the container we have run so far.  
 
 ### Running Containers in Interactive Mode
@@ -385,7 +356,7 @@ Kernel \r on an \m (\l)
 
 [Command]  
 ```
- ps aux
+ps aux
 ```  
 
 [Output]  
@@ -397,7 +368,6 @@ PID   USER     TIME   COMMAND
 ```  
 
 [Command]  
-
 ```
 ifconfig
 ```  
@@ -426,8 +396,9 @@ lo        Link encap:Local Loopback
 
 [Command]  
 ```
- hostname
-```
+hostname
+```  
+
 [Output]   
 
 ```
@@ -440,12 +411,13 @@ We have understood that containers have their own namespaces. But will they shar
 [Command]  
 ```
 uname -a
-
 ```  
+
 [Output - **container**]  
 
 ```
 Linux ae84d253ecb5 3.10.0-327.28.3.el7.x86_64 #1 SMP Thu Aug 18 19:05:49 UTC 2016 x86_64 Linux
+
 ```
 
 [Output - **hostmachine**]  
@@ -457,16 +429,22 @@ Linux dockerserver 3.10.0-327.28.3.el7.x86_64 #1 SMP Thu Aug 18 19:05:49 UTC 201
 As you can see, the container uses the same Linux Kernel from the host machine. Just like **uname** command, the following commands share the same information as well. In order to avoid repetition, we will see the output of container alone.
 
 [Command]  
-``` date ```  
-[Output]  
+```
+date  
+```  
+
+[Output]    
 
 ```
 Wed Sep 14 18:21:25 UTC 2016
 ```  
 
 [Command]  
-``` cat /proc/cpuinfo ```
-[Output]  
+```
+cat /proc/cpuinfo
+```  
+
+[Output]    
 
 ```
 processor       : 0
@@ -498,8 +476,8 @@ power management:
 [Command]  
 ```
 free
-
 ```  
+
 [Output]  
 
 ```
@@ -510,76 +488,176 @@ Swap:      1048572          0    1048572
 
 ```  
 
-##### Exiting Interactive mode
+Now exit out of that container by running **exit** or by pressing **ctrl+d**  
 
 
-### Making Containers Persist
+### Making Containers Persist  
+#### Running Containers in Detached Mode  
+So far, we have run the containers interactively. But this is not always the case. Sometimes you may want to start a container  without interacting with it. This can be achieved by using **"detached mode"** (**-d**) flag. Hence the container will launch the deafault application inside and run in the background. This saves a lot of time, we don't have to wait till the applications launches successfully. It will happen behind the screen. Let us run the following command to see this in action  
+
+[Command]  
 
 ```
 docker run -d schoolofdevops/loop program
-```
+```  
 
 -d , --detach : detached mode  
 
+[Output]  
+
+```
+2533adf280ac4838b446e4ee1151f52793e6ac499d2e631b2c752459bb18ad5f
+```  
+This will run the container in detached mode. We are only given with full container id as the output  
+
+Let us check whether this container is running or not  
+[Command]  
 ```
 docker ps
+```  
+
+[Output]  
 
 ```
+CONTAINER ID        IMAGE                 COMMAND             CREATED             STATUS              PORTS               NAMES
+2533adf280ac        schoolofdevops/loop   "program"           37 seconds ago      Up 36 seconds                           prickly_bose
+```  
+As we can see in the output, the container is running in the background  
 
 #### Connecting to running container to execute commands
+We can connect to the containers which are running in detached mode by using these following commands  
+[Command]  
+```
+docker exec -it 2533adf280ac sh
+```  
+
+[Output]  
 
 ```
-docker exec
+/ #
+```  
+Now exit the container.  
+
+#### Pausing Running Container  
+Just like in a video, it is easy to pause and unpause the running container  
+[Command]  
 
 ```
-```
-docker exec -it
+docker pause 2533adf280ac
+```  
+
+After running pause command, run docker ps again to check the container status  
+
+[Output]  
 
 ```
+CONTAINER ID        IMAGE                 COMMAND             CREATED             STATUS                  PORTS               NAMES
+2533adf280ac        schoolofdevops/loop   "program"           2 minutes ago       Up 2 minutes (Paused)                       prickly_bose
+```  
 
-#### Pausing Running Container
+#### Unpausing the paused container  
+This can be achieved by executing following command  
 
+[Command]  
 ```
-
-docker pause
-
-```
-
-```
-
 docker unpause
+```  
+
+Run docker ps to verify the changes  
+
+[Output]  
 
 ```
+CONTAINER ID        IMAGE                 COMMAND             CREATED             STATUS              PORTS               NAMES
+2533adf280ac        schoolofdevops/loop   "program"           6 minutes ago       Up 6 minutes                            prickly_bose
+```  
 
-### Creating and Starting a Container instead of Running
+### Creating and Starting a Container instead of Running  
+docker **run** command will create a container and start that container simultaneously. However docker gives you the granularity to create a container and not to run it at the time of creation. However, This container can be started by using **start** command  
+
+[Command]  
 
 ```
-docker create
-```
+docker create alpine:3.4 sh
+```  
+
+Run **docker ps -l** to see the status of the container  
+
+[Output]  
 
 ```
-docker start
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+22146d15eb71        alpine:3.4          "sh"                31 seconds ago      Created                                 grave_leavitt
+```  
+
+If you do **docker ps -l**, you will find that container status to be **Created**. Now lets start this container by executing,   
+
+[Command]  
+
 ```
+docker start 22146d15eb71
+```  
+Run docker ps -l again to see the status change  
+
+[Output]  
+
+```
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
+22146d15eb71        alpine:3.4          "sh"                3 minutes ago       Exited (0) 2 minutes ago                      grave_leavitt
+```  
+This command will start the container and exit right away we have not specified interactive mode in the command  
 
 ### Creating Pretty Reports with Formatters
 ```
-docker ps --format
+docker ps --format "{{.ID}}: {{.Status}}"
 ```
 
-TODO: add a table of go template formatters
+[Output]  
+
+```
+2533adf280ac: Up 12 minutes
+```  
 
 ### Stopping and Removing Containers
+We have learnt about interacting with a container, running a container, pausing and unpausing a container, creating and starting a container. But what if you want to stop the container or remove the container itself  
+
+#### Stop a container  
+A container can be stopped using **stop** command. This command will stop the application inside that container hence the container itself will be stopped. This command basically sends a **SIGTERM** signal to the container (graceful shutdown)  
+
+[Command]  
 
 ```
-docker stop
-```
+docker stop 2533adf280ac
+```  
+[Output]  
 
 ```
-docker kill
+2533adf280ac
+```  
+#### Kill a container  
+This command will send **SIGKILL** signal and kills the container ungracefully  
+
+[Command]  
 
 ```
+docker kill 590e7060743a
+```  
+
+[Output]  
 
 ```
-docker rm
+590e7060743a
+```  
+If you want to remove a container, then execute the following command. Before running this command, run docker ps -a to see the list of pre run containers. Choose a container of your wish and then execute docker rm command. Then run docker ps -a again to check the removed container list or not  
+
+[Command]  
 
 ```
+docker rm 590e7060743a
+```  
+
+[Output]  
+
+```
+590e7060743a
+```  
