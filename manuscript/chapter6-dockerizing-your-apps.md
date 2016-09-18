@@ -1,7 +1,7 @@
 #Dockerizing your Applications : Building Images and Working with Registries
 
-In the previous session, we learnt about various container operations such as running containers from
-pre built images, port mapping, inspecting and updating containers, limiting resources etc. In this
+In the previous session, we have learnt about various container operations such as running containers from
+pre built images, port mapping, inspecting and updating containers, limiting resources etc., In this
 chapter, we are going to learn about how to build containers for your individual applications, as well
 as how to work with docker hub registry to host and distribute the images.  
 
@@ -9,10 +9,24 @@ as how to work with docker hub registry to host and distribute the images.
 ### Registering with the Registry : Creating an Account on DockerHub
 Since we are going to start working with the registry, build and push images to it later, its essential to have our own account on the registry. For the purpose of this tutorial, we are going to use the hosted registry i.e.  Dockerhub.  
 
-Steps to create Dockerhub account
+Steps to create Dockerhub account  
+#### Step 1:  
+Visit the following link and sign up with your email id  
+  **https://hub.docker.com/**
 
-TODO: Add steps to create dockerhub account with screenshots
+  ![hub](images/chp6/hub1.png)  
 
+#### Step 2:  
+Check your email inbox and check the activation email sent by docker team  
+
+#### Step 3:  
+After clicking on the activation link, you will be redirected to a log in page. Enter your credentials and log in  
+
+  ![hub](images/chp6/hub2.png)  
+
+You will be launched to Dockerhub main page. Now the registration process is complete and you have account in Dockerhub!  
+
+  ![hub](images/chp6/hub3.png)  
 
 ### Building Docker Images - A manual approach
 
@@ -131,34 +145,73 @@ Find out the port mapping, connect to http://host:port and validate your image.
 
 ### Dockerfiles - Automating Image Builds
 
-Earlier, we created image by launching a intermediate container and manually installing and configuring ghost app. This time we are going to use a Dockerfile,  write the
-specification to build image, and use it to automate the proces of building image.
+Earlier, we created image by launching a intermediate container and manually installing and configuring ghost app. This time we are going to use a Dockerfile, write the specification to build image, and use it to automate the process of building image.  
 
 
-#### Setting up a ghostapp repo on github.
+#### Setting up a ghostapp repo on github  
 
-We are going to setup a git repository where we create the configurations to automate the build process of our image. Later in this chatper, we will also integrate it with dockerhub to create automated builds. For this purpose its essential to have a github account.
+We are going to setup a git repository where we create the configurations to automate the build process of our image. Later in this chapter, we will also integrate it with Dockerhub to create automated builds. For this purpose, its essential to have a github account.  
 
-  * Create and Account on gihub if you do not already have it
-  * For the ghostapp repo  https://github.com/schoolofdevops/ghostapp
-  * Clone the forked repo
-
+  * Create and Account on github, if you do not already have it  
+  * Fork the ghostapp repo  
+    **https://github.com/schoolofdevops/ghostapp**  
+  * Clone the forked repo  
+Install git on VM first  
 ```
-
+yum install git  
+```  
+Clone the repository  
+```
 git clone https://github.com/YOUR_GITHUB_ID/ghostapp.git
-cd ghostapp
+```  
+
+[Output]  
 
 ```
+Cloning into 'ghostapp'...
+remote: Counting objects: 12, done.
+remote: Compressing objects: 100% (9/9), done.
+remote: Total 12 (delta 3), reused 12 (delta 3), pack-reused 0
+Unpacking objects: 100% (12/12), done.
+```  
+Change the current working directory  
 
-Examine  Dockerfile in ghostapp directory.
+```  
+cd ghostapp
+```  
 
-#### Building and Image with Dockerfile
+Examine  Dockerfile in ghostapp directory.  
+
+```
+ls  
+```  
+
+[Output]  
+
+```
+config.js  docker-entrypoint.sh  Dockerfile  Dockerfile.inef  install_ghost.sh  LICENSE
+```  
+
+#### Building and Image with Dockerfile  
+Let us build the docker image from the Dockerfile that we have inside the ghostapp directory  
+
+[Syntax]  
 
 ```
 docker build -t USERNAME/REPO:TAG  .   
+```  
+Example:  
 
-e.g.  docker build -t mydockerhubid/ghost:0.2.0 .
 ```
+docker build -t mydockerhubid/ghost:0.2.0 .
+```  
+
+[Output]  
+
+```
+
+```
+
 
 TODO: add output of build
 
