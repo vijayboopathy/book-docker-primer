@@ -562,55 +562,92 @@ cd /vagrant
 docker cp ghost:/usr/src/ghost .  
 ls  
 ```  
-You might get some protocol errors. The error because it tries to create a symlink to a file on host machine, which does not exist.  
+You might get some protocol errors. The reason for this is, it tries to create a symlink to a file on host machine, which does not exist.  
 
-### Rename a  container
+### Rename a  container  
+When you want to rename a container, we can use use **rename** command. Let us change our **ghost** container's name to **ghostapp**. Try *docker ps* to see the changes,
 
  ```
- docker rename
+ docker rename ghost ghostapp  
+ docker ps  
+ ```  
+
+ [Output]  
+
+ ```
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                     NAMES
+b28efeef41f8        ghost:0.10.1        "/entrypoint.sh npm s"   20 hours ago        Up 2 minutes        0.0.0.0:32768->2368/tcp   ghostapp
  ```
 
-### Controlling Resources
+### Controlling Resources  
+Docker provides us the granularity to control each container's **resource utilization**. We have several commands in the inventory to achieve this  
 
-
-#### Putting limits on Running Containers
-
-```
-docker update
-```
+#### Putting limits on Running Containers  
+First, let us see the memory utilization of our ghostapp container, by trying
 
 ```
-docker inspect ghost | grep -i memory
-           "Memory": 0,
-           "KernelMemory": 0,
-           "MemoryReservation": 0,
-           "MemorySwap": 0,
-           "MemorySwappiness": -1,
+docker inspect ghostapp | grep -i memory  
+```  
 
-docker update -m 400M ghost
-ghost
+[Output]  
 
-docker inspect ghost | grep -i memory
-           "Memory": 419430400,
-           "KernelMemory": 0,
-           "MemoryReservation": 0,
-           "MemorySwap": 0,
-           "MemorySwappiness": -1,
 ```
+"Memory": 0,
+"KernelMemory": 0,
+"MemoryReservation": 0,
+"MemorySwap": 0,
+"MemorySwappiness": -1,
+```  
 
-#### Limiting Resources while launching new containers
+You can see that **Memory** attribute has **0** as its value. 0 means unlimited usage of host's RAM. We can put a cap on that by using **update** command  
 
-What can be limited
+```
+docker update -m 400M ghostapp  
+```  
+
+[Output]  
+
+```
+ghostapp
+```  
+Let us check whether the change has taken effect or not  
+
+```
+docker inspect ghostapp | grep -i memory
+```  
+
+[Output]  
+
+```
+"Memory": 419430400,
+"KernelMemory": 0,
+"MemoryReservation": 0,
+"MemorySwap": 0,
+"MemorySwappiness": -1,
+
+```  
+As you can see, the memory utilization of the container is changed from 0 (unlimited) to 400 mb  
+
+#### Limiting Resources while launching new containers  
+The following resources can be limited using the *update* command  
   * CPU
   * Memory
   * Disk IO
-  * Capabilities
+  * Capabilities  
 
-Open two terminals, lets call them T1, and T2
+Open two terminals, lets call them T1, and T2  
+In T1, start monitoring the stats  
 
-In T1, start monitoring the stats   
 ```
 docker stats
+```  
+
+[Output]  
+```
+CONTAINER           CPU %               MEM USAGE / LIMIT     MM %               NET I/O             BLOCK I/O             PIDS
+b28efeef41f8        0.16%               190.1 MiB / 400 MiB   47.51%              1.296 kB / 648 B    86.02 kB / 45.06 kB   0
+CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O             PIDS
+b28efeef41f8        0.01%               190.1 MiB / 400 MiB   47.51%              1.296 kB / 648 B    86.02 kB / 45.06 kB   0
 ```
 
 From T2, launch two containers with different CPU shares. Default CPU shares are set to 1024. This is a relative weight.  
@@ -620,31 +657,59 @@ docker run -d --name st-01  schoolofdevops/stresstest stress --cpu 1
 
 docker run -d --name st-02 -c 512  schoolofdevops/stresstest stress --cpu 1
 
+```  
+When you launch the first container, it will use the full quota of CPU, i.e., 100%  
+
+[Output - **After first container launch**]  
+
 ```
+CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O             PIDS
+b28efeef41f8        0.01%               190.1 MiB / 400 MiB     47.51%              1.944 kB / 648 B    86.02 kB / 45.06 kB   0
+764f158d6523        102.73%             2.945 MiB / 1.797 GiB   0.16%               648 B / 648 B       3.118 MB / 0 B        0
+```  
+
+[Output - **After second container lauch**]  
+
+```
+CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O             PIDS
+b28efeef41f8        0.00%               190.1 MiB / 400 MiB     47.51%              2.592 kB / 648 B    86.02 kB / 45.06 kB   0
+764f158d6523        66.97%              2.945 MiB / 1.797 GiB   0.16%               1.296 kB / 648 B    3.118 MB / 0 B        0
+a13f98995ade        33.36%              2.945 MiB / 1.797 GiB   0.16%               648 B / 648 B       3.118 MB / 0 B        0
+```  
 
 Observe stats in T1
-
-Launch a couple more nodes with different cpu shares, observe how T2 stats change
+Launch a couple more nodes with different cpu shares, observe how T2 stats change  
 
 ```
 docker run -d --name st-03 -c 512  schoolofdevops/stresstest stress --cpu 1
 
 docker run -d --name st-04  schoolofdevops/stresstest stress --cpu 1
 
+```  
+
+[Output - **After all containers are launched**]  
 
 ```
+CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O             PIDS
+b28efeef41f8        0.00%               190.1 MiB / 400 MiB     47.51%              3.888 kB / 648 B    86.02 kB / 45.06 kB   0
+764f158d6523        32.09%              2.945 MiB / 1.797 GiB   0.16%               2.592 kB / 648 B    3.118 MB / 0 B        0
+a13f98995ade        16.02%              2.945 MiB / 1.797 GiB   0.16%               1.944 kB / 648 B    3.118 MB / 0 B        0
+f04e9ea5627c        16.37%              2.949 MiB / 1.797 GiB   0.16%               1.296 kB / 648 B    3.118 MB / 0 B        0
+abeab389a873        31.71%              2.949 MiB / 1.797 GiB   0.16%               648 B / 648 B       3.118 MB / 0 B        0
+```  
+Close the T2 terminal  
 
-Exercises
+#### Exercises  
+Try to these exercises, to get a better understanding  
   * Put a memory limit
   * Set disk iops
 
-### Launching Containers with Elevated  Privileges
+### Launching Containers with Elevated  Privileges  
+When the operator executes docker run --privileged, Docker will enable to access to all devices on the host as well as set some configuration in AppArmor or SELinux to allow the container nearly all the same access to the host as processes running outside containers on the host.
 
-```
-docker run --privileged
-```
-
-Example: Running a sysdig container to monitor docker
+#### Example:  
+##### Running a sysdig container to monitor docker  
+Sysdig tool allows us to monitor the processes that are going on in the other containers. It is more like running a top command from one container on behalf of others.  
 
 ```
 docker run -itd --name=sysdig --privileged=true \
@@ -655,15 +720,38 @@ docker run -itd --name=sysdig --privileged=true \
            --volume=/lib/modules:/host/lib/modules:ro \
            --volume=/usr:/host/usr:ro \
            sysdig/sysdig:0.11.0 sysdig
+```  
+[Output]  
+```
+Unable to find image 'sysdig/sysdig:0.11.0' locally
+0.11.0: Pulling from sysdig/sysdig
+
+0f409b0f5b3d: Pull complete
+64965da77fc6: Pull complete
+588eeb0d4c30: Pull complete
+9aa18e35b362: Pull complete
+cc036f2dca14: Pull complete
+33400f3af946: Pull complete
+b39ed90e36fd: Pull complete
+1fca16436380: Pull complete
+Digest: sha256:ee9d66a07308c5aef91f070cce5c9fb891e4fefb5da4d417e590662e34846664
+Status: Downloaded newer image for sysdig/sysdig:0.11.0
+6ba17cf2af7b87621b3380517af45c5785dc8cda75111f0f8c36bb83e163a120
 ```
 
 ```
 docker exec -it sysdig bash
-
 csysdig
-```
+```  
 
-TODO: after launching csysdig, select F2, select Containers and monitor those.
+[Output]  
+
+![sysdig](images/sysdig.png)  
+
+After this, press f2 and select **containers** tab  
+Now check what are the processes are running in other containers  
+
+![sysdig](images/sysdig2.png)  
 
 
 ##### References
