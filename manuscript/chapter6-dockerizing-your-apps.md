@@ -622,4 +622,50 @@ Let us validate whether this image has been uploaded to our Dockerhub registry o
 
 After having published our images to Dockerhub, we are also going to setup a process to create automated builds.  
 
-TODO: add instructions with screenshot to create automated builds by integrating dockerhub with github. Refer to https://docs.docker.com/docker-hub/builds
+#### Step 1  
+
+![hub](images/chp6/hub5.png)  
+
+#### Step 2  
+
+![hub](images/chp6/hub6.png)  
+
+#### Step 3  
+
+![hub](images/chp6/hub7.png)  
+
+#### Step 4  
+
+![hub](images/chp6/hub8.png)  
+
+#### Step 5  
+
+![hub](images/chp6/hub8.png)  
+
+#### Step 6  
+
+Authorize DockerHub application on Github  
+
+#### Step 7  
+
+Again go back to DockerHub dashboard and click on the following link  
+
+![hub](images/chp6/hub5.png)  
+
+#### Step 8  
+
+![hub](images/chp6/hub9.png)  
+
+#### Step 10  
+
+![hub](images/chp6/hub10.png)  
+
+#### Step 11  
+
+![hub](images/chp6/hub11.png)  
+
+#### Step 12  
+
+![hub](images/chp6/hub12.png)  
+
+There you go... You have created an automated build on DockerHub
