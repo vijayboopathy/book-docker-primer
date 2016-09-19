@@ -616,7 +616,7 @@ latest: digest: sha256:664be48340de2f3a201869ec7a5faa4c721b6758b0ab94063753a15b9
 ```  
 Let us validate whether this image has been uploaded to our Dockerhub registry or not  
 
-![hub](images/hub4.png)  
+![hub](images/chp6/hub4.png)  
 
 ### Create Automated Builds  
 
