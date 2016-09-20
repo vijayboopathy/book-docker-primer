@@ -57,7 +57,7 @@ docker service inspect --pretty helloworld
 docker service scale helloworld=5
 
 
-docker service ls
+docker service ps helloworld
 
 docker node ps node1
 
