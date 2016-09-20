@@ -1,7 +1,7 @@
 # Docker Primer
 
 
-* [Getting Started with Docker  6.7](https://github.com/schoolofdevops/book-docker-primer/blob/master/manuscript/chapter4-getting_started.md)  
+* [Getting Started with Docker ](https://github.com/schoolofdevops/book-docker-primer/blob/master/manuscript/chapter4-getting_started.md)  
 * [Container Operations Server](https://github.com/schoolofdevops/book-docker-primer/blob/master/manuscript/chapter5-container_operations.md)
 * [Dockerizing your Apps](https://github.com/schoolofdevops/book-docker-primer/blob/master/manuscript/chapter6-dockerizing-your-apps.md)  
 
