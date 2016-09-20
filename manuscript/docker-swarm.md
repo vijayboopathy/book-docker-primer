@@ -1,4 +1,4 @@
-#### Docker Swarm Quick Dive
+### Docker Swarm Quick Dive
 #### With Swarm Mode ( Docker version 1.12)
 
 ```
@@ -7,7 +7,7 @@ docker-machine create -d virtualbox master
 
 docker-machine create -d virtualbox node1
 
-docker-machine env node2
+docker-machine create -d virtualbox node2
 
 ```
 
