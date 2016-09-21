@@ -9,7 +9,7 @@ operations such as creating, starting, stopping, removing, pausing containers an
 We can use docker cli to interact with docker daemon. Various functions of docker command is given below. Try this yourself by runnig **$sudo docker** command  
 
 ```
-sudo docker
+docker
 ```  
 
 [Output]  
@@ -180,82 +180,48 @@ The **docker info** command gives a lot of useful information like total number 
 Now we have a basic understanding of docker command and sub commands, let us dive straight into launching our very first **container**  
 
 ```
-docker run hello-world
+docker run alpine uptime
 ```  
+Where,
+  * we are using docker **client** to
+  * run a application/command **uptime** using  
+  * an image by name **alpine**
 
 [Output]  
 ```
-Unable to find image 'hello-world:latest' locally
-latest: Pulling from library/hello-world
-
-c04b14da8d14: Pull complete
-Digest: sha256:0256e8a36e2070f7bf2d0b0763dbabdd67798512411de4cdcf9431a1feb60fd9
-Status: Downloaded newer image for hello-world:latest
-
-Hello from Docker!
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker Hub account:
- https://hub.docker.com
-
-For more examples and ideas, visit:
- https://docs.docker.com/engine/userguide/
-
+docker run alpine uptime
+Unable to find image 'alpine:latest' locally
+latest: Pulling from library/alpine
+117f30b7ae3d: Pull complete
+Digest: sha256:02eb5cfe4b721495135728ab4aea87418fd4edbfbf83612130a81191f0b2aae3
+Status: Downloaded newer image for alpine:latest
+ 07:45:40 up  3:13,  load average: 0.00, 0.00, 0.00
 ```  
 
 **What happened?**  
 This command will  
-  * Pull the image file from **docker hub**, a cloud registry, about which we will explain in forthcoming chapters  
-  * Create a container using that image  
-  * Run an executable (called **hello-world**) inside that container  
-  * Put that output to the terminal  
-  * Exit out of the container  
+  * Pull the **alpine** image file from **docker hub**, a cloud registry
+  * Create a runtime environment/ container with the above image   
+  * Launch a program (called **uptime**) inside that container  
+  * Stream that output to the terminal  
+  * Stop the container once the program is exited
 
 **Where did my container go?**  
 
 The point here to remember is that, when that executable stops running inside the container, the container itself will stop  
-This process will further be explained under the **lifecycle of a container** topic. So don't bang your head by dwelling deep into this  
+This process will further be explained under the **lifecycle of a container** topic.
+
 
 Let's see what happens when we run that command again,  
 
 [Output]  
 ```
-Hello from Docker!
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
- 1. The Docker client contacted the Docker daemon.
- 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
- 3. The Docker daemon created a new container from that image which runs the
-    executable that produces the output you are currently reading.
- 4. The Docker daemon streamed that output to the Docker client, which sent it
-    to your terminal.
-
-To try something more ambitious, you can run an Ubuntu container with:
-
- $ docker run -it ubuntu bash
-
-Share images, automate workflows, and more with a free Docker Hub account:
- https://hub.docker.com
-
-For more examples and ideas, visit:
- https://docs.docker.com/engine/userguide/
-
+docker run alpine uptime
+ 07:48:06 up  3:15,  load average: 0.00, 0.00, 0.00
 ```  
 
 Now docker no longer pulls the image again from registry, because **it has stored the image locally** from the previous run  
-So once an image is pulled, we can make use of that image to create and run as many container as we want without the need of downloading the image again and again  
+So once an image is pulled, we can make use of that image to create and run as many container as we want without the need of downloading the image again. However it has created a new instance of the iamge/container.
 
 ### Checking Status of the containers  
 
@@ -277,10 +243,9 @@ docker ps -l
 ```  
 
 [Output]  
-
 ```
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES
-e2c4890c78da        hello-world         "/hello"            8 minutes ago       Exited (0) 8 minutes ago                       boring_jennings
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS                          PORTS               NAMES
+988f4d90d604        alpine              "uptime"            About a minute ago   Exited (0) About a minute ago                       fervent_hypatia
 ```  
 the **-l** flag shows the last run container along with other details like image it used, command it executed, return code of that command, etc.,  
 
@@ -289,10 +254,9 @@ docker ps -n 2
 ```  
 [Output]  
 ```
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
-adf9e6d80c13        busybox             "sh"                38 seconds ago      Exited (0) 37 seconds ago                       romantic_nobel
-e2c4890c78da        hello-world         "/hello"            14 minutes ago      Exited (0) 14 minutes ago                       boring_jennings
-
+NAMES
+988f4d90d604        alpine              "uptime"            About a minute ago   Exited (0) About a minute ago                       fervent_hypatia
+acea3023dca4        alpine              "uptime"            3 minutes ago        Exited (0) 3 minutes ago                            mad_darwin
 ```  
 Docker gives us the flexibility to show the desirable number of last run containers. This can be achieved by using **-n #no_of_results** flag  
 
@@ -303,11 +267,12 @@ docker ps -a
 [Output]  
 
 ```
-CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                      PORTS               NAMES
-d2c3c5c52067        nginx               "nginx -g 'daemon off"   About a minute ago   Exited (0) 8 seconds ago                        modest_hodgkin
-adf9e6d80c13        busybox             "sh"                     5 minutes ago        Exited (0) 5 minutes ago                        romantic_nobel
-e2c4890c78da        hello-world         "/hello"                 18 minutes ago       Exited (0) 18 minutes ago                       boring_jennings
-53d0b6c2f6c8        hello-world         "/hello"                 30 minutes ago       Exited (0) 30 minutes ago                       naughty_brattain
+CONTAINER ID        IMAGE                        COMMAND                  CREATED              STATUS                          PORTS                  NAMES
+988f4d90d604        alpine                       "uptime"                 About a minute ago   Exited (0) About a minute ago                          fervent_hypatia
+acea3023dca4        alpine                       "uptime"                 4 minutes ago        Exited (0) 4 minutes ago                               mad_darwin
+60ffa94e69ec        ubuntu:14.04.3               "bash"                   27 hours ago         Exited (0) 26 hours ago                                infallible_meninsky
+dd75c04e7d2b        schoolofdevops/ghost:0.3.1   "/entrypoint.sh npm s"   4 days ago           Exited (0) 3 days ago                                  kickass_bardeen
+c082972f66d6        schoolofdevops/ghost:0.3.1   "/entrypoint.sh npm s"   4 days ago           Exited (0) 3 days ago           0.0.0.0:80->2368/tcp   sodcblog
 
 ```  
 This command will show all the container we have run so far.  
