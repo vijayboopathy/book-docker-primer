@@ -401,22 +401,3 @@ ls
 
 Now here we can see that the file which we created "initcron" is available.
 The Docker Private Registry is successfully configured.
-
-
-
-
-
-
-
-
-```
-    description "Docker Registry"
-
-start on runlevel [2345]
-stop on runlevel [016]
-
-respawn
-respawn limit 10 5
-
-chdir /docker-registry
-exec /usr/local/bin/docker-compose up```
