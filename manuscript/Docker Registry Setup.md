@@ -1,4 +1,4 @@
- Docker Registry
+ # Docker Registry
 
 The Registry is a stateless, highly scalable server side application that stores and lets you distribute Docker images.
 
@@ -83,7 +83,12 @@ registry:
 
     Now save the file. And run docker compose.
 
->docker-compose up
+>docker-compose up -d
+
+Now to stop and remove the container that have been created
+
+>docker-compose stop  
+docker-compose rm
 
 ### Setting Nginx container
 
@@ -174,7 +179,8 @@ Save the file and exit
 
 Now again start the docker compose.
 
->docker-compose up
+>docker-compose up -d
+
 
 To check whether Docker Rregistry is working or not try the following command
 
@@ -185,6 +191,11 @@ The output will be {}
 And also try
 >curl http://localhost:5043/v2/
 The output will be {}
+
+Now to stop and remove the container that have been created
+
+>docker-compose stop  
+docker-compose rm
 
 Next we going to create user and  their password who can login and access our Docker Registry
 >cd ~/docker-registry/nginx
@@ -216,8 +227,7 @@ add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
 
 Now we are going to start the Docker Compose to see the changes  that we have done in the configuration file.
 >cd ~/docker-registry
-
-docker-compose up
+docker-compose up -d
 
 Now check the in the command line
 >curl http://localhost:5043/v2/
@@ -237,6 +247,11 @@ This is because we we have given the registry.password file for the authenticati
 
 Now try the below command to check
 >curl http://USERNAME:PASSWORD@localhost:5043/v2/
+
+Now to stop and remove the container that have been created
+
+>docker-compose stop  
+docker-compose rm
 
 
 ### Setitng the ssl certificates
@@ -309,10 +324,15 @@ Restart the docker service and run the docker compose file.
 
 cd ~/docker-registry
 
-docker-compose up
+>docker-compose up -d
 
 To check the output:
 >curl https://USERNAME:PASSWORD@[YOUR-DOMAIN]:5043/v2/
+
+To stop and remove the container that have been created
+
+>docker-compose stop  
+docker-compose rm
 
 Changing the ports of the Nginx from 5043 to 443 in docker-compose.yml
 
@@ -327,10 +347,11 @@ to
 Save and exit
 Run the compose file
 
->docker-compose up
+>docker-compose up -d
 
 To check the output:
 >curl https://<YOURUSERNAME>:<YOURPASSWORD>@YOUR-DOMAIN/v2/
+
 
 ###Accessing Your Docker Registry from a Client Machine
 
@@ -349,7 +370,6 @@ Paste the data present in the devdockerCA.crt in the below file
 
 Now update the certificates and restart the docker service
 >update-ca-trust extract
-
 service docker restart
 
 Now we can access the Docker Registry that is present in the Other VM by
