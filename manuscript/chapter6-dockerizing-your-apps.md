@@ -1,43 +1,41 @@
-#Dockerizing your Applications : Building Images and Working with Registries
-
+# Dockerizing your Applications : Building Images and Working with Registries  
 In the previous session, we have learnt about various container operations such as running containers from
 pre built images, port mapping, inspecting and updating containers, limiting resources etc., In this
 chapter, we are going to learn about how to build containers for your individual applications, as well
-as how to work with docker hub registry to host and distribute the images.  
+as how to work with docker hub registry to host and distribute the images.
 
+### Registering with the Registry : Creating an Account on DockerHub  
+Since we are going to start working with the registry, build and push images to it later, its essential to have our own account on the registry. For the purpose of this tutorial, we are going to use the hosted registry i.e. Dockerhub.
 
-### Registering with the Registry : Creating an Account on DockerHub
-Since we are going to start working with the registry, build and push images to it later, its essential to have our own account on the registry. For the purpose of this tutorial, we are going to use the hosted registry i.e. Dockerhub.  
+Steps to create Dockerhub account
 
-Steps to create Dockerhub account  
 #### Step 1:  
 Visit the following link and sign up with your email id  
   **https://hub.docker.com/**
 
-  ![hub](images/chp6/hub1.png)  
+  ![hub](images/chp6/hub1.png)
 
 #### Step 2:  
-Check your email inbox and check the activation email sent by docker team  
+Check your email inbox and check the activation email sent by docker team
 
 #### Step 3:  
-After clicking on the activation link, you will be redirected to a log in page. Enter your credentials and log in  
+After clicking on the activation link, you will be redirected to a log in page. Enter your credentials and log in
 
-  ![hub](images/chp6/hub2.png)  
+  ![hub](images/chp6/hub2.png)
 
-You will be launched to Dockerhub main page. Now the registration process is complete and you have account in Dockerhub!  
+You will be launched to Dockerhub main page. Now the registration process is complete and you have account in Dockerhub!
 
-  ![hub](images/chp6/hub3.png)  
+  ![hub](images/chp6/hub3.png)
 
-### Building Docker Images - A manual approach
+### Building Docker Images - A manual approach  
+Before we start building automated images, we are going to create a docker image by hand. We have already used the pre built image from the registry in the last session. In this session, however, we are going to create our own image with ghost installed. Since Ghost is a node.js based application, we will base our work on existing official image for **node**
 
-Before we start building automated images, we are going to create a docker image by hand. We have already used the pre built image from the registry in the last session. In this session, however, we are going to create our own image with ghost installed. Since Ghost is a node.js based application, we will base our work on existing offical image for **node**  
-
-##### Types of Images  
+##### Types of Images
 
   * Slim  
-  * Complete  
+  * Complete
 
-To search an image from the registry we could use,  
+To search an image from the registry we could use,
 
 ```
 docker search node
