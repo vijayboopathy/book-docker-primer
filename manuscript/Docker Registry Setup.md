@@ -34,10 +34,26 @@ Create a file system like given below in the host computer
 └── Docker-Client
     └── Vagrantfile
 ```  
-Both vagrant file of the same Docker Box file.  
-Change the ip in the both the Vagrentfile as "192.168.33.10" and "192.168.33.11"  
+Both vagrant file bringing up the same Vagrant Box file.
+
+Change the ip in the both the Vagrentfile as "192.168.33.10" and "192.168.33.11"
+
 Now bring up the VM in the Docker directory.  
+
+```
+vagrant up; vagrant ssh
+```
+
+Once both the machines are up add an entry in `/etc/hosts`
+
+```
+<Machine IP> myregistrydomain.com
+```
+
+*Note: Replace `<Machine IP>` with the respective vagrant machine IP's*
+
 We need to install Docker Compose first.  
+
 ```
 yum install python-pip
 pip install docker-compose
@@ -285,7 +301,7 @@ openssl x509 -req -in dev-docker-registry.com.csr -CA devdockerCA.crt -CAkey dev
 Since the certificates are signed by ourself not by the Certificate Authority we have to tell the docker client that we have the authorized certificates. NOow we are going to do that locally  
 ```
 update-ca-trust force-enable
-cp domain.crt /etc/pki/ca-trust/source/anchors/
+cp devdockerCA.crt /etc/pki/ca-trust/source/anchors/
 update-ca-trust extract
 ```  
 Restart the docker service and run the docker compose file.  
