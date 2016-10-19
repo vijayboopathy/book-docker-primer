@@ -129,6 +129,7 @@ registry:
 ```  
 Now we going to  edit the registry configurations for the SSL certification  
 ```
+mkdir -p ~/docker-registry/nginx/
 vim ~/docker-registry/nginx/registry.conf
 ```  
 Add the following contents  
@@ -193,7 +194,10 @@ Now to stop and remove the container that have been created
 docker-compose stop  
 docker-compose rm
 ```  
-Next we going to create user and  their password who can login and access our Docker Registry  
+Next we going to create user and  their password who can login and access our Docker Registry
+
+(Replace USERNAME with your *username*)
+
 ```
 cd ~/docker-registry/nginx
 htpasswd -c registry.password USERNAME
@@ -272,38 +276,54 @@ ssl_certificate_key /etc/nginx/conf.d/domain.key;
 Save and exit the file.  
 
 ### Creating and Signing the Certificates  
+
 Now we are going to create and sign the SSL certificate.  
+
 ```
 cd ~/docker-registry/nginx
 ```  
+
 Generating the root key:  
 ```
 openssl genrsa -out devdockerCA.key 2048
 ```  
-Generating the root certificate(Press Enter whenever it prompts):  
+
+Generating the root certificate(Press Enter whenever it prompts):
+
 ```
 openssl req -x509 -new -nodes -key devdockerCA.key -days 10000 -out devdockerCA.crt
-```  
+``` 
+
 Generating the key for the server:  
+
 ```
 openssl genrsa -out domain.key 2048
 ```  
-Now we are going to send a certificate signing request.  
-Press Enter whenever it prompts and when it asks for the *"Common Name"* type the ip of the machine or the server address (Which you have given in registry.conf near server_name)  
-**Donate create a challenging password**  
+
+Now we are going to send a certificate signing request.
+
+Press Enter whenever it prompts and When it asks for the **"Common Name (eg, your name or your server's hostname) []:"** type the ip of the machine or the server address (Which you have given in registry.conf near server_name)
+
+**Don't create a challenging password**
+
 ```
 openssl req -new -key domain.key -out dev-docker-registry.com.csr
 ```  
+
 Now we are going to sign the certificates request  
+
 ```
 openssl x509 -req -in dev-docker-registry.com.csr -CA devdockerCA.crt -CAkey devdockerCA.key -CAcreateserial -out domain.crt -days 10000
 ```  
-Since the certificates are signed by ourself not by the Certificate Authority we have to tell the docker client that we have the authorized certificates. NOow we are going to do that locally  
+
+Since the certificates are signed by ourself not by the Certificate Authority we have to tell the docker client that we have the authorized certificates. Now we are going to do that locally by running the following commands,
+
 ```
 update-ca-trust force-enable
 cp devdockerCA.crt /etc/pki/ca-trust/source/anchors/
 update-ca-trust extract
 ```  
+
 Restart the docker service and run the docker compose file.  
 ```
 sudo service docker restart
