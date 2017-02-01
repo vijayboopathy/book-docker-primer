@@ -1,6 +1,6 @@
 # Managing Containers - Learning about Common Container Operations
 
-In the previous chapter, we have learnt about container lifecycle management including how to create, launch, connect to, stop and remove containers. In this chapter, we are going to learn how to launch a container with a pre built app image and how to access the app with published ports. We will also learn about common container operations such as inspecting container information, checking logs and performance stats, renaming and updating the properties of a container, limiting resources etc.  
+In the previous chapter, we have learnt about container lifecycle management including how to create, launch, connect to, stop and remove containers. In this chapter, we are going to learn how to launch a container with a pre built image which has an application and how to access the application with published ports. We will also learn about common container operations such as *inspecting container information*, *checking logs* and *performance stats*, *renaming and updating the properties of a container*, *limiting resources* etc.,
 
 As part of the tutorial, we are going to setup a shiny new blogging/publishing site. To set it up, we will use a node.js based framework called **ghost**, a simple, fast, and SEO friendly alternative to more sophisticated publishing platforms such as wordpress. However, its purely gives us a blogging platform.  
 

@@ -184,7 +184,7 @@ The **docker info** command gives a lot of useful information like total number 
 Now we have a basic understanding of docker command and sub commands, let us dive straight into launching our very first **container**.
 
 ```
-docker run alpine uptime
+docker container run alpine uptime
 ```
 
 Where,
@@ -219,7 +219,7 @@ The point here to remember is that, when that executable stops running inside th
 Let's see what happens when we run that command again,
 
 ```
-docker run alpine uptime
+docker container run alpine uptime
 07:48:06 up  3:15,  load average: 0.00, 0.00, 0.00
 ```
 
@@ -230,7 +230,7 @@ Now docker no longer pulls the image again from registry, because **it has store
 We have understood how docker run commands works. But what if you want to see list of running containers and history of containers that had run and exited? This can be done by executing the following commands.
 
 ```
-docker ps
+docker container ls
 ```
 
 [Output]
@@ -239,10 +239,10 @@ docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
 
-This command doesn't give us any information. Because, **docker ps** command will only show list of container(s) which are **running**.
+This command doesn't give us any information. Because, **docker container ls** command will only show list of container(s) which are **running**.
 
 ```
-docker ps -l
+docker container ls -l
 ```  
 
 [Output]
@@ -255,7 +255,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 the **-l** flag shows the last run container along with other details like image it used, command it executed, return code of that command, etc.,
 
 ```
-docker ps -n 2
+docker container ls -n 2
 ```
 
 [Output]
@@ -269,7 +269,7 @@ acea3023dca4        alpine              "uptime"            3 minutes ago       
 Docker gives us the flexibility to show the desirable number of last run containers. This can be achieved by using **-n #no_of_results** flag.
 
 ```
-docker ps -a
+docker container ls -a
 ```
 
 [Output]
@@ -292,7 +292,7 @@ We can interact with docker containers by giving -it flags at the run time. Thes
 * t - tty
 
 ```
-docker run -it alpine:3.4 sh
+docker container run -it alpine:3.4 sh
 ```
 
 [Output]
@@ -480,7 +480,7 @@ So far, we have run the containers interactively. But this is not always the cas
 [Command]
 
 ```
-docker run -d schoolofdevops/loop program
+docker container run -d schoolofdevops/loop program
 ```
 
 -d , --detach : detached mode
@@ -498,7 +498,7 @@ Let us check whether this container is running or not
 [Command]
 
 ```
-docker ps
+docker container ls
 ```
 
 [Output]
@@ -517,7 +517,7 @@ We can connect to the containers which are running in detached mode by using the
 [Command]
 
 ```
-docker exec -it 2533adf280ac sh
+docker container exec -it 2533adf280ac sh
 ```
 
 [Output]
@@ -535,12 +535,12 @@ Just like in a video, it is easy to pause and unpause the running container
 [Command]
 
 ```
-docker pause 2533adf280ac
+docker container pause 2533adf280ac
 ```
 
-After running pause command, run docker ps again to check the container status  
+After running pause command, run *docker container ls* again to check the container status  
 
-[Output]  
+[Output]
 
 ```
 CONTAINER ID        IMAGE                 COMMAND             CREATED             STATUS                  PORTS               NAMES
@@ -554,10 +554,10 @@ This can be achieved by executing following command.
 [Command]
 
 ```
-docker unpause
+docker container unpause 2533adf280ac
 ```
 
-Run docker ps to verify the changes.
+Run *docker container ls* to verify the changes.
 
 [Output]
 
@@ -573,10 +573,10 @@ docker **run** command will create a container and start that container simultan
 [Command]
 
 ```
-docker create alpine:3.4 sh
+docker container create alpine:3.4 sh
 ```
 
-Run **docker ps -l** to see the status of the container
+Run **docker container ls -l** to see the status of the container
 
 [Output]
 
@@ -585,15 +585,15 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 22146d15eb71        alpine:3.4          "sh"                31 seconds ago      Created                                 grave_leavitt
 ```
 
-If you do **docker ps -l**, you will find that container status to be **Created**. Now lets start this container by executing,
+If you do **docker container ls -l**, you will find that container status to be **Created**. Now lets start this container by executing,
 
 [Command]
 
 ```
-docker start 22146d15eb71
+docker container start 22146d15eb71
 ```
 
-Run docker ps -l again to see the status change
+Run *docker container ls -l* again to see the status change
 
 [Output]
 
@@ -607,7 +607,7 @@ This command will start the container and exit right away we have not specified 
 ## Creating Pretty Reports with Formatters
 
 ```
-docker ps --format "{{.ID}}: {{.Status}}"
+docker container ls --format "{{.ID}}: {{.Status}}"
 ```
 
 [Output]
@@ -627,7 +627,7 @@ A container can be stopped using **stop** command. This command will stop the ap
 [Command]
 
 ```
-docker stop 2533adf280ac
+docker container stop 2533adf280ac
 ```
 
 [Output]
@@ -642,7 +642,7 @@ This command will send **SIGKILL** signal and kills the container ungracefully
 [Command]  
 
 ```
-docker kill 590e7060743a
+docker container kill 590e7060743a
 ```  
 
 [Output]  
@@ -650,12 +650,12 @@ docker kill 590e7060743a
 ```
 590e7060743a
 ```  
-If you want to remove a container, then execute the following command. Before running this command, run docker ps -a to see the list of pre run containers. Choose a container of your wish and then execute docker rm command. Then run docker ps -a again to check the removed container list or not  
+If you want to remove a container, then execute the following command. Before running this command, run *docker container ls -a* to see the list of pre run containers. Choose a container of your wish and then execute *docker container rm* command. Then run *docker container ls -a* again to check the removed container list or not.
 
 [Command]
 
 ```
-docker rm 590e7060743a
+docker container rm 590e7060743a
 ```
 
 [Output]
